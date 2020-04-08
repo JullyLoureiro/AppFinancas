@@ -5,10 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.core.content.ContextCompat
 import com.example.financas.R
+import com.example.financas.model.TipoTransacao
 import com.example.financas.model.Transacao
+import com.example.financas.utils.formataDataBrasileiro
+import com.example.financas.utils.formataMoedaBrasileira
 import kotlinx.android.synthetic.main.transacao_item.view.*
+import java.math.BigDecimal
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ListaTransacoesAdapter(transacoes: List<Transacao>,
                              context: Context) : BaseAdapter() {
@@ -19,13 +26,18 @@ class ListaTransacoesAdapter(transacoes: List<Transacao>,
         val viewCreated = LayoutInflater.from(context).inflate(R.layout.transacao_item, parent, false)
 
         val transacao = transacoes[position]
-        viewCreated.transacao_valor.text = transacao.valor.toString()
-        viewCreated.transacao_categoria.text = transacao.categoria
 
-        val formatoBrasileiro = "dd/MM/yyyy"
-        val formato = SimpleDateFormat(formatoBrasileiro)
-        val dataFormatada = formato.format(transacao.data.time)
-        viewCreated.transacao_data.text = dataFormatada
+        if(transacao.tipo == TipoTransacao.RECEITA){
+             viewCreated.transacao_valor.setTextColor(ContextCompat.getColor(context, R.color.receita))
+             viewCreated.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_receita)
+        } else {
+            viewCreated.transacao_valor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
+            viewCreated.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_despesa)
+        }
+
+        viewCreated.transacao_valor.text = transacao.valor.formataMoedaBrasileira()
+        viewCreated.transacao_categoria.text = transacao.categoria
+        viewCreated.transacao_data.text = transacao.data.formataDataBrasileiro()
 
         return viewCreated
     }

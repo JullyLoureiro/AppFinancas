@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.financas.R
+import com.example.financas.model.TipoTransacao
 import com.example.financas.model.Transacao
 import com.example.financas.ui.adapter.ListaTransacoesAdapter
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
@@ -16,10 +17,10 @@ class ListaTransacoesActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_transacoes)
         val transacoes = listOf(
-            Transacao(BigDecimal(50),"Compras", Calendar.getInstance()),
-            Transacao(BigDecimal(80),"Vendas", Calendar.getInstance())
+            Transacao(valor = BigDecimal(50), tipo = TipoTransacao.DESPESA),
+            Transacao(valor = BigDecimal(80), tipo = TipoTransacao.RECEITA),
+            Transacao(valor = BigDecimal(30), tipo = TipoTransacao.RECEITA)
         )
-        //val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, transacoes)
-        lista_transacoes_listview.setAdapter(ListaTransacoesAdapter(transacoes, this))
+        lista_transacoes_listview.adapter = ListaTransacoesAdapter(transacoes, this)
     }
 }

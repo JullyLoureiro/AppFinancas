@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#191C18</color>
     <color name="colorAccent">#191C18</color>
     <color name="colorBackground">#C1C1C1</color>
-    <color name="receita">#FF64DD17</color>
-    <color name="despesa">#C51162</color>
+    <color name="receita">#00B8D4</color>
+    <color name="despesa">#E80078</color>
 </resources>
