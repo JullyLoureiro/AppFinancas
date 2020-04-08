@@ -11,6 +11,7 @@ import com.example.financas.model.TipoTransacao
 import com.example.financas.model.Transacao
 import com.example.financas.utils.formataDataBrasileiro
 import com.example.financas.utils.formataMoedaBrasileira
+import com.example.financas.utils.limitaEmAte
 import kotlinx.android.synthetic.main.transacao_item.view.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -36,7 +37,7 @@ class ListaTransacoesAdapter(transacoes: List<Transacao>,
         }
 
         viewCreated.transacao_valor.text = transacao.valor.formataMoedaBrasileira()
-        viewCreated.transacao_categoria.text = transacao.categoria
+        viewCreated.transacao_categoria.text =  transacao.categoria.limitaEmAte(14)
         viewCreated.transacao_data.text = transacao.data.formataDataBrasileiro()
 
         return viewCreated
