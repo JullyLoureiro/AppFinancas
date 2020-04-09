@@ -18,29 +18,46 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ListaTransacoesAdapter(transacoes: List<Transacao>,
-                             context: Context) : BaseAdapter() {
-    private val transacoes = transacoes
-    private val context = context
+class ListaTransacoesAdapter(private val transacoes: List<Transacao>,
+                             private val context: Context) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewCreated = LayoutInflater.from(context).inflate(R.layout.transacao_item, parent, false)
 
         val transacao = transacoes[position]
 
-        if(transacao.tipo == TipoTransacao.RECEITA){
-             viewCreated.transacao_valor.setTextColor(ContextCompat.getColor(context, R.color.receita))
-             viewCreated.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_receita)
-        } else {
-            viewCreated.transacao_valor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
-            viewCreated.transacao_icone.setBackgroundResource(R.drawable.icone_transacao_item_despesa)
-        }
-
-        viewCreated.transacao_valor.text = transacao.valor.formataMoedaBrasileira()
-        viewCreated.transacao_categoria.text =  transacao.categoria.limitaEmAte(14)
-        viewCreated.transacao_data.text = transacao.data.formataDataBrasileiro()
+        setaReceitaDespesa(transacao, viewCreated)
+        setaValor(viewCreated, transacao)
+        setaCategoria(viewCreated, transacao)
+        setaData(viewCreated, transacao)
 
         return viewCreated
+    }
+
+    private fun setaData(viewCreated: View, transacao: Transacao) {
+        viewCreated.transacao_data.text = transacao.data.formataDataBrasileiro()
+    }
+
+    private fun setaCategoria(viewCreated: View, transacao: Transacao) {
+        viewCreated.transacao_categoria.text = transacao.categoria.limitaEmAte(14)
+    }
+
+    private fun setaValor(viewCreated: View, transacao: Transacao) {
+        viewCreated.transacao_valor.text = transacao.valor.formataMoedaBrasileira()
+    }
+
+    private fun setaReceitaDespesa(transacao: Transacao, viewCreated: View) {
+        var cor = 0
+        var imagem = 0
+        if (transacao.tipo == TipoTransacao.RECEITA) {
+            cor = ContextCompat.getColor(context, R.color.receita)
+            imagem = R.drawable.icone_transacao_item_receita
+        } else {
+            cor = ContextCompat.getColor(context, R.color.despesa)
+            imagem = R.drawable.icone_transacao_item_despesa
+        }
+        viewCreated.transacao_valor.setTextColor(cor)
+        viewCreated.transacao_icone.setBackgroundResource(imagem)
     }
 
     override fun getItem(position: Int): Transacao {
